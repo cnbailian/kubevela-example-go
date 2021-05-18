@@ -1,0 +1,10 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: gin-basic
+spec:
+  components:
+    - name: basic
+      type: basic
+      properties:
+        image: "cnbailian/vela-basic"

@@ -1,0 +1,42 @@
+apiVersion: core.oam.dev/v1beta1
+kind: ComponentDefinition
+metadata:
+  name: basic
+  annotations:
+    definition.oam.dev/description: "Describes long-running, scalable, containerized services that running at backend. They do NOT have network endpoint to receive external network traffic."
+spec:
+  workload:
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+  schematic:
+    cue:
+      template: |
+        output: {
+        	apiVersion: "apps/v1"
+        	kind:       "Deployment"
+        	spec: {
+        		selector: matchLabels: {
+        			"app.oam.dev/component": context.name
+        		}
+
+        		template: {
+        			metadata: labels: {
+        				"app.oam.dev/component": context.name
+        			}
+
+        			spec: {
+        				containers: [{
+        					name:  context.name
+        					image: parameter.image
+        				}]
+        			}
+        		}
+        	}
+        }
+
+        parameter: {
+        	// +usage=Which image would you like to use for your service
+        	// +short=i
+        	image: string
+        }
