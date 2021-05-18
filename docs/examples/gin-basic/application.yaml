@@ -8,3 +8,9 @@ spec:
       type: basic
       properties:
         image: "cnbailian/vela-basic"
+      traits:
+        - type: traefik
+          properties:
+            domain: basic.example.com
+            http:
+              "/": 80
