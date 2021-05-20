@@ -15,4 +15,4 @@ vet:
 	go vet ./...
 
 build-basic: fmt vet
-	docker build  -f gin-basic/Dockerfile --build-arg=GITVERSION=$(GIT_COMMIT) --build-arg=TARGETARCH=$(TARGETARCH) -t $(IMAGE_REPO)-basic:$(IMAGE_VERSION) .
+	docker build -f gin-basic/Dockerfile --build-arg=GITVERSION=$(GIT_COMMIT) --build-arg=TARGETARCH=$(TARGETARCH) -t $(IMAGE_REPO)-basic:$(IMAGE_VERSION) .
