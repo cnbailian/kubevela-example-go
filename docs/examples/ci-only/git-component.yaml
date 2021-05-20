@@ -7,32 +7,12 @@ metadata:
 spec:
   workload:
     definition:
-      apiVersion: tekton.dev/v1alpha1
-      kind: PipelineResource
+      apiVersion: tekton.dev/v1beta1
+      kind: Task
   schematic:
     cue:
       template: |
         output: {
-        	apiVersion: "tekton.dev/v1alpha1"
-        	kind:       "PipelineResource"
-        	metadata:
-        		name: context.name
-        	spec: {
-        		type: "git"
-        		params: [
-        			{
-        				name:  "url"
-        				value: parameter.repourl
-        			},
-        			{
-        				name:  "revision"
-        				value: parameter.revision
-        			},
-        		]
-        	}
-        }
-
-        outputs: task: {
         	apiVersion: "tekton.dev/v1beta1"
         	kind:       "Task"
         	metadata:
@@ -63,6 +43,26 @@ spec:
         						},
         					]
         				}
+        			},
+        		]
+        	}
+        }
+
+        outputs: git: {
+        	apiVersion: "tekton.dev/v1alpha1"
+        	kind:       "PipelineResource"
+        	metadata:
+        		name: context.name
+        	spec: {
+        		type: "git"
+        		params: [
+        			{
+        				name:  "url"
+        				value: parameter.repourl
+        			},
+        			{
+        				name:  "revision"
+        				value: parameter.revision
         			},
         		]
         	}

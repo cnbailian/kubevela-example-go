@@ -21,19 +21,12 @@ spec:
             env:
               - name: "ENV"
                 value: "test-env"
-          - name: build
-            image: "gcr.io/kaniko-project/executor:latest"
-            command: [
-                "/kaniko/executor",
-                "--dockerfile=gin-basic/Dockerfile",
-                "--context=/workspace/repo",
-                "--destination=docker.io/cnbailian/vela-basic-ci:v1.2",
-                "--insecure",
-            ]
-            env:
-              - name: "DOCKER_CONFIG"
-                value: "/tekton/home/.docker"
-    - name: ci-only-v1.2
+      traits:
+        - type: build-step
+          properties:
+            image: "docker.io/cnbailian/vela-basic-ci:v1.3"
+            dockerfile: "gin-basic/Dockerfile"
+    - name: ci-only-v1.3
       type: tekton-run
       properties:
         taskname: template

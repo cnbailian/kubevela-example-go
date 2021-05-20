@@ -1,24 +1,4 @@
 output: {
-	apiVersion: "tekton.dev/v1alpha1"
-	kind:       "PipelineResource"
-	metadata:
-		name: context.name
-	spec: {
-		type: "git"
-		params: [
-			{
-				name:  "url"
-				value: parameter.repourl
-			},
-			{
-				name:  "revision"
-				value: parameter.revision
-			},
-		]
-	}
-}
-
-outputs: task: {
 	apiVersion: "tekton.dev/v1beta1"
 	kind:       "Task"
 	metadata:
@@ -49,6 +29,26 @@ outputs: task: {
 						},
 					]
 				}
+			},
+		]
+	}
+}
+
+outputs: git: {
+	apiVersion: "tekton.dev/v1alpha1"
+	kind:       "PipelineResource"
+	metadata:
+		name: context.name
+	spec: {
+		type: "git"
+		params: [
+			{
+				name:  "url"
+				value: parameter.repourl
+			},
+			{
+				name:  "revision"
+				value: parameter.revision
 			},
 		]
 	}
