@@ -5,7 +5,7 @@ metadata:
 spec:
   components:
     - name: template
-      type: git-template
+      type: git-ci
       properties:
         repourl: "https://github.com/cnbailian/kubevela-examples-go.git"
         revision: "master"
@@ -26,8 +26,7 @@ spec:
           properties:
             image: "docker.io/cnbailian/vela-basic-ci:v1.3"
             dockerfile: "gin-basic/Dockerfile"
-    - name: ci-only-v1.3
-      type: tekton-run
-      properties:
-        taskname: template
-        saname: "build-sa"
+        - type: taskrun
+          properties:
+            name: "run"
+            saname: "build-sa"

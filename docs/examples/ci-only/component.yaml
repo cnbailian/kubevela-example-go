@@ -1,7 +1,7 @@
 apiVersion: core.oam.dev/v1beta1
 kind: ComponentDefinition
 metadata:
-  name: git-template
+  name: git-ci
   annotations:
     definition.oam.dev/description: "tekton ci template ComponentDefinition"
 spec:
