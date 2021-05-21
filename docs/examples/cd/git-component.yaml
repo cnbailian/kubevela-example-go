@@ -1,38 +1,18 @@
 apiVersion: core.oam.dev/v1beta1
-kind: TraitDefinition
+kind: ComponentDefinition
 metadata:
+  name: git-template
   annotations:
-    definition.oam.dev/description: "tekton TraitDefinition"
-  name: build-ci
+    definition.oam.dev/description: "tekton ci template ComponentDefinition"
 spec:
-  appliesToWorkloads:
-    - basic
-  podDisruptive: false
+  workload:
+    definition:
+      apiVersion: tekton.dev/v1beta1
+      kind: Task
   schematic:
     cue:
       template: |
-        // trait template can have multiple outputs in one trait
-        outputs: git: {
-        	apiVersion: "tekton.dev/v1alpha1"
-        	kind:       "PipelineResource"
-        	metadata:
-        		name: "input-\(context.name)"
-        	spec: {
-        		type: "git"
-        		params: [
-        			{
-        				name:  "url"
-        				value: parameter.repourl
-        			},
-        			{
-        				name:  "revision"
-        				value: parameter.revision
-        			},
-        		]
-        	}
-        }
-
-        outputs: task: {
+        output: {
         	apiVersion: "tekton.dev/v1beta1"
         	kind:       "Task"
         	metadata:
@@ -68,26 +48,23 @@ spec:
         	}
         }
 
-        outputs: taskrun: {
-        	apiVersion: "tekton.dev/v1beta1"
-        	kind:       "TaskRun"
+        outputs: git: {
+        	apiVersion: "tekton.dev/v1alpha1"
+        	kind:       "PipelineResource"
         	metadata:
         		name: context.name
         	spec: {
-        		if parameter.saname != _|_ {
-        			serviceAccountName: parameter.saname
-        		}
-        		taskRef: {
-        			name: context.name
-        		}
-        		resources: {
-        			inputs: [{
-        				name: "repo"
-        				resourceRef: {
-        					name: "input-\(context.name)"
-        				}
-        			}]
-        		}
+        		type: "git"
+        		params: [
+        			{
+        				name:  "url"
+        				value: parameter.repourl
+        			},
+        			{
+        				name:  "revision"
+        				value: parameter.revision
+        			},
+        		]
         	}
         }
 
@@ -110,9 +87,6 @@ spec:
 
         	// +usage=Specify the repo revision
         	revision: string
-
-        	// +usage=Specify the taskrun ServiceAccountName
-        	saname: string
 
         	// +usage=CI steps
         	steps: [...#Step]
