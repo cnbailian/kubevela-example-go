@@ -10,9 +10,15 @@ spec:
       apiVersion: tekton.dev/v1beta1
       kind: TaskRun
   status:
-    # TODO
     healthPolicy: |
-      isHealth: (context.output.status.conditions[0].type == "Succeeded") && (context.output.status.conditions[0].status == "true")
+      isHealth: *false | bool
+      for k, v in context.output.status.conditions {
+        {
+           if  (v.type == "Succeeded") && (v.status == "True"){
+             isHealth: true
+           }
+        }
+      }
   schematic:
     cue:
       template: |
