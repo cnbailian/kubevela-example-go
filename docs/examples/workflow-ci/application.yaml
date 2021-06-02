@@ -1,0 +1,26 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: gin-basic-ci
+spec:
+  components:
+    - name: basic-ci
+      type: basic
+      properties:
+        image: "cnbailian/vela-basic-ci:v1"
+      traits:
+        - type: tektontask
+          properties:
+            repourl: "https://github.com/cnbailian/kubevela-examples-go.git"
+            revision: "master"
+            saname: "build-sa"
+            steps:
+              - name: test-go
+                image: golang:1.16
+                command: ["go"]
+                args: ["version"]
+  workflow:
+    - name: taskrun
+      type: taskrun
+      properties:
+        taskname: tasks

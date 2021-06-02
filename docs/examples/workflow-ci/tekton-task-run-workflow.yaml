@@ -1,0 +1,32 @@
+apiVersion: core.oam.dev/v1beta1
+kind: WorkflowStepDefinition
+metadata:
+  name: taskrun
+spec:
+  schematic:
+    cue:
+      template: |
+        output: {
+        	apiVersion: "tekton.dev/v1beta1"
+        	kind:       "TaskRun"
+        	metadata:
+        		name: context.name
+        	spec: {
+        		taskRef: {
+        			name: parameter.taskname
+        		}
+        		resources: {
+        			inputs: [{
+        				name: "repo"
+        				resourceRef: {
+        					name: parameter.taskname
+        				}
+        			}]
+        		}
+        	}
+        }
+
+         parameter: {
+         	// +usage=Specify the taskrun TaskRef
+         	taskname: string
+         }
